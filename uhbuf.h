@@ -6,10 +6,12 @@
 
 #define CY_FX_WAIT_TIMEOUT              (5000)          /* Timeout for transfers. */
 
+/*
 CyU3PReturnStatus_t
 CyFxChanRecovery (
 		uint8_t Ep,
 		CyU3PDmaChannel *Ch);
+*/
 
 CyU3PReturnStatus_t
 CyFxSendBuffer (
