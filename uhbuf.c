@@ -65,7 +65,7 @@ CyFxSendBuffer (
     	return status;
     }
 
-    status = CyU3PDmaChannelWaitForCompletion (outCh, CYU3P_NO_WAIT);
+    status = CyU3PDmaChannelWaitForCompletion (outCh, CYU3P_WAIT_FOREVER );
     if(status!=CY_U3P_SUCCESS) {
     	CyU3PDebugPrint (4,"[CyFxSendBuffer] CyU3PDmaChannelWaitForCompletion error=0x%x\r\n",status);
     	return status;
@@ -114,7 +114,7 @@ CyFxRecvBuffer (
     	return status;
     }
 
-    status = CyU3PDmaChannelWaitForCompletion (inpCh, CYU3P_NO_WAIT);
+    status = CyU3PDmaChannelWaitForCompletion (inpCh, CYU3P_WAIT_FOREVER );
     if(status!=CY_U3P_SUCCESS) {
     	CyU3PDebugPrint (4,"[CyFxRecvBuffer] CyU3PDmaChannelWaitForCompletion error=0x%x\r\n",status);
     	return status;
