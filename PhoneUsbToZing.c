@@ -83,6 +83,7 @@ PhoneUsbToZingThread(
 #ifdef DEBUG_THREAD_LOOP
 	    	CyU3PDebugPrint(4,"[P-Z] %d bytes received from PhoneDataIn\r\n",rt_len);
 #endif
+			CyU3PThreadSleep(10);
 	    }
 
 	    phoneUsbToZing.pf_->size = rt_len;
