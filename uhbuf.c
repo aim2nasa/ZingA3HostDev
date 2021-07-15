@@ -100,7 +100,7 @@ CyFxRecvBuffer (
     	return status;
     }
 
-    uint32_t *host_active_ep = (uint_32_t*)0xE0032020;
+    uint32_t *host_active_ep = (uint32_t*)0xE0032020;
     CyU3PDebugPrint (4,"host_active_ep=%x", *host_active_ep);
 
     status = CyU3PUsbHostEpWaitForCompletion (inpEp, &epStatus,
