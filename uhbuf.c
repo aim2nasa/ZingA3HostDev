@@ -101,13 +101,13 @@ CyFxRecvBuffer (
     }
 
     uint32_t *host_active_ep = (uint32_t*)0xE0032020;
-    CyU3PDebugPrint (4,"host_active_ep=%x", *host_active_ep);
+    //CyU3PDebugPrint (4,"host_active_ep=%x", *host_active_ep);
 
     status = CyU3PUsbHostEpWaitForCompletion (inpEp, &epStatus,
                  CYU3P_NO_WAIT);
     if (status != CY_U3P_ERROR_INVALID_SEQUENCE)
     {
-     CyU3PDebugPrint (4,"hostepwaitstat=%x", status);
+     //CyU3PDebugPrint (4,"hostepwaitstat=%x", status);
     }
 
     status = CyU3PUsbHostEpSetXfer (inpEp,
