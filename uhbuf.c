@@ -87,6 +87,7 @@ CyFxRecvBuffer (
     uint32_t prodXferCount = 0;
     uint32_t consXferCount = 0;
     CyU3PDmaState_t state = 0;
+	uint8_t retry;
 
     *length = 0;
     /* Setup the DMA for transfer. */
@@ -100,10 +101,29 @@ CyFxRecvBuffer (
     	return status;
     }
 
+    uint32_t *host_active_ep = (uint32_t*)0xE0032020;
+    CyU3PDebugPrint (4,"host_active_ep=%x", *host_active_ep);
+
+    /*status = CyU3PUsbHostEpWaitForCompletion (inpEp, &epStatus,
+                 CYU3P_NO_WAIT);
+    if (status != CY_U3P_ERROR_INVALID_SEQUENCE)
+    {
+     CyU3PDebugPrint (4,"hostepwaitstat=%x", status);
+    }*/  /*removing CyU3PUsbHostEpWaitForCompletion() as we cannot use this to check glHostPendingEpXfer*/
+
     status = CyU3PUsbHostEpSetXfer (inpEp,
             CY_U3P_USB_HOST_EPXFER_NORMAL, count);
     if(status!=CY_U3P_SUCCESS) {
     	CyU3PDebugPrint (4,"[CyFxRecvBuffer] CyU3PUsbHostEpSetXfer error=0x%x, ep=0x%x,count=%d\r\n",status,inpEp,count);
+		for (retry = 0; retry < 5; retry++)
+		{
+			CyU3PThreadSleep(1);
+			status = CyU3PUsbHostEpSetXfer (inpEp, CY_U3P_USB_HOST_EPXFER_NORMAL, count);
+			CyU3PDebugPrint (4,"[CyFxRecvBuffer]status=0x%x\r\n",status);
+			if(status == CY_U3P_SUCCESS)
+				break;
+		}
+		if (status != CY_U3P_SUCCESS)
     	return status;
     }
 
