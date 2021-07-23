@@ -89,7 +89,7 @@
 #include "ZingHw.h"
 #include "ControlCh.h"
 #include "helper.h"
-#include "usbHostEpWrapper.h"
+#include "Host-PPC\usbHostEpWrapper.h"
 
 CyU3PThread applnThread;                        /* Application thread structure */
 CyU3PEvent  applnEvent;                         /* Event group used to signal the thread. */
