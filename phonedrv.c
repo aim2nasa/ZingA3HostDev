@@ -12,7 +12,7 @@
 #include "PhoneUsbToZing.h"
 #include "ControlCh.h"
 #include "setup.h"
-#include "usbHostEpWrapper.h"
+#include "HOST-PPC\usbHostEpWrapper.h"
 
 CyU3PDmaChannel glChHandlePhoneDataIn;      /* IN EP channel for ingress data. */
 CyU3PDmaChannel glChHandlePhoneDataOut;     /* OUT EP channel for egress data. */
