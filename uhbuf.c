@@ -4,6 +4,7 @@
 #include "cyu3utils.h"
 #include "cyu3system.h"
 #include "host.h"
+#include "cyu3socket.h"
 
 #define CY_U3P_UIB_SCK_STATUS(n)     (*(uvint32_t *)(0xe003800c + ((n) * 0x0080)))
 #define CyU3PDmaGetSckNum(sckId)     ((sckId) & CY_U3P_DMA_SCK_MASK)
