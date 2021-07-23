@@ -89,6 +89,7 @@
 #include "ZingHw.h"
 #include "ControlCh.h"
 #include "helper.h"
+#include "usbHostEpWrapper.h"
 
 CyU3PThread applnThread;                        /* Application thread structure */
 CyU3PEvent  applnEvent;                         /* Event group used to signal the thread. */
@@ -471,7 +472,7 @@ CyFxApplnStart ()
     /* Identify the EP0 packet size and update the scheduler. */
     if (glEp0Buffer[7] != 8)
     {
-        CyU3PUsbHostEpRemove (0);
+        UsbHostEpRemove (0);
         epCfg.maxPktSize = glEp0Buffer[7];
         epCfg.fullPktSize = glEp0Buffer[7];
         status = CyU3PUsbHostEpAdd (0, &epCfg);
@@ -550,8 +551,8 @@ CyFxApplnStart ()
 enum_error:
     glIsApplnActive = CyFalse;
     /* Remove EP0. and disable the port. */
-    CyU3PUsbHostEpRemove (0);
-    CyU3PUsbHostPortDisable ();
+    UsbHostEpRemove (0);
+    UsbHostPortDisable ();
     CyU3PDebugPrint (4, "Application start failed with error: 0x%x.\r\n", status);
 }
 
@@ -571,8 +572,8 @@ CyFxApplnStop ()
     }
 
     /* Remove EP0. and disable the port. */
-    CyU3PUsbHostEpRemove (0);
-    CyU3PUsbHostPortDisable ();
+    UsbHostEpRemove (0);
+    UsbHostPortDisable ();
 
     glHostOwner = CY_FX_HOST_OWNER_NONE;
 

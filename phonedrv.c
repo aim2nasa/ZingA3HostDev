@@ -12,6 +12,7 @@
 #include "PhoneUsbToZing.h"
 #include "ControlCh.h"
 #include "setup.h"
+#include "usbHostEpWrapper.h"
 
 CyU3PDmaChannel glChHandlePhoneDataIn;      /* IN EP channel for ingress data. */
 CyU3PDmaChannel glChHandlePhoneDataOut;     /* OUT EP channel for egress data. */
@@ -186,13 +187,13 @@ app_error:
 	CyU3PDmaChannelDestroy (&glChHandlePhoneDataIn);
 	if (Phone.inEp != 0)
 	{
-		CyU3PUsbHostEpRemove (Phone.inEp);
+		UsbHostEpRemove (Phone.inEp);
 		Phone.inEp = 0;
 	}
 	CyU3PDmaChannelDestroy (&glChHandlePhoneDataOut);
 	if (Phone.outEp != 0)
 	{
-		CyU3PUsbHostEpRemove (Phone.outEp);
+		UsbHostEpRemove (Phone.outEp);
 		Phone.outEp = 0;
 	}
 
@@ -208,7 +209,7 @@ PhoneDriverDeInit ()
 
 	ControlChTerminate = phoneUsbToZingTerminate = zingToPhoneUsbTerminate = CyTrue;
 
-    status = CyU3PUsbHostPortDisable ();
+    status = UsbHostPortDisable ();
     if(status==CY_U3P_SUCCESS) {
         CyU3PDebugPrint (4, "host port disabled\r\n");
     }else{
@@ -223,7 +224,7 @@ PhoneDriverDeInit ()
     CyU3PDmaChannelDestroy (&glChHandlePhoneDataIn);
     if (Phone.inEp != 0)
     {
-        if((status=CyU3PUsbHostEpRemove (Phone.inEp))==CY_U3P_SUCCESS) {
+        if((status=UsbHostEpRemove (Phone.inEp))==CY_U3P_SUCCESS) {
         	CyU3PDebugPrint(4,"[DriverDeInit] CyU3PUsbHostEpRemove(0x%x) ok\n",Phone.inEp);
             Phone.inEp = 0;
         }else{
@@ -233,7 +234,7 @@ PhoneDriverDeInit ()
     CyU3PDmaChannelDestroy (&glChHandlePhoneDataOut);
     if (Phone.outEp != 0)
     {
-        if((status=CyU3PUsbHostEpRemove (Phone.outEp))==CY_U3P_SUCCESS) {
+        if((status=UsbHostEpRemove (Phone.outEp))==CY_U3P_SUCCESS) {
         	CyU3PDebugPrint(4,"[DriverDeInit] CyU3PUsbHostEpRemove(0x%x) ok\n",Phone.outEp);
             Phone.outEp = 0;
         }else{
