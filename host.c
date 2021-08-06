@@ -774,6 +774,10 @@ ApplnThread_Entry (
     CyU3PGpioClock_t    clkCfg;
     uint32_t            evStat;
     uint32_t			loop,iter;
+    uint16_t majorVersion;
+    uint16_t minorVersion;
+    uint16_t patchNumber;
+    uint16_t buildNumber;
 
     /* Initialize GPIO module. */
     clkCfg.fastClkDiv = 2;
@@ -797,6 +801,15 @@ ApplnThread_Entry (
     {
         CyU3PDebugPrint (4, "Application initialization failed. Aborting.\r\n");
         CyFxAppErrorHandler (status);
+    }
+
+    status = CyU3PSysGetApiVersion(&majorVersion,&minorVersion,&patchNumber,&buildNumber);
+    if(status==CY_U3P_SUCCESS) {
+    	CyU3PDebugPrint (4, "libcyfxapi version\r\n");
+        CyU3PDebugPrint (4, "  majorVersion=%d\r\n",majorVersion);
+        CyU3PDebugPrint (4, "  minorVersion=%d\r\n",minorVersion);
+        CyU3PDebugPrint (4, "  patchNumber=%d\r\n",patchNumber);
+        CyU3PDebugPrint (4, "  buildNumber=%d\r\n",buildNumber);
     }
 
     loop = iter = 0;
