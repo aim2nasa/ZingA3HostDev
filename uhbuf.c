@@ -4,7 +4,6 @@
 #include "cyu3utils.h"
 #include "cyu3system.h"
 #include "host.h"
-#include "cyu3socket.h"
 
 #define CY_U3P_UIB_SCK_STATUS(n)     (*(uvint32_t *)(0xe003800c + ((n) * 0x0080)))
 #define CyU3PDmaGetSckNum(sckId)     ((sckId) & CY_U3P_DMA_SCK_MASK)
@@ -48,6 +47,7 @@ CyFxSendBuffer (
     CyU3PDmaBuffer_t buf_p;
     CyU3PUsbHostEpStatus_t epStatus;
     CyU3PReturnStatus_t status = CY_U3P_SUCCESS;
+	
 
     /* Setup the DMA for transfer. */
     buf_p.buffer = buffer;
@@ -59,7 +59,11 @@ CyFxSendBuffer (
     	CyU3PDebugPrint (4,"[CyFxSendBuffer] CyU3PDmaChannelSetupSendBuffer error=0x%x,count=%d,size=%d\r\n",status,buf_p.count,buf_p.size);
     	return status;
     }
-
+	
+	uvint32_t *host_active_ep = (uint32_t*)0xE0032020;
+	CyU3PDebugPrint (4,"outhostactiveep=%x", *host_active_ep);
+	CyU3PDebugPrint (4,"outPendingXfer=%x\r\n", glHostPendingEpXfer_debug);
+	
     status = CyU3PUsbHostEpSetXfer (outEp,
             CY_U3P_USB_HOST_EPXFER_NORMAL, count);
     if(status!=CY_U3P_SUCCESS) {
@@ -123,9 +127,10 @@ CyFxRecvBuffer (
     	return status;
     }
 
-    uint32_t *host_active_ep = (uint32_t*)0xE0032020;
-    CyU3PDebugPrint (4,"host_active_ep=%x", *host_active_ep);
-	CyU3PDebugPrint (4,"glHostPendingEpXfer=%x", glHostPendingEpXfer_debug);
+    uvint32_t *host_active_ep = (uint32_t*)0xE0032020;
+	
+    CyU3PDebugPrint (4,"inhostactiveep=%x", *host_active_ep);
+	CyU3PDebugPrint (4,"InPendingXfer=%x\r\n", glHostPendingEpXfer_debug);
 
     /*status = CyU3PUsbHostEpWaitForCompletion (inpEp, &epStatus,
                  CYU3P_NO_WAIT);
