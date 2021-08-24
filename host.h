@@ -161,6 +161,8 @@ extern void
 CyFxEchoDriverDeInit (
         void);
 
+CyU3PMutex gMutex;
+
 #include "cyu3externcend.h"
 
 #endif /* _INCLUDED_CYFXUSBHOST_H_ */

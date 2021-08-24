@@ -914,6 +914,7 @@ CyFxApplicationDefine (
     if (status != 0)
         goto InitError;
 
+    CyU3PMutexCreate(&gMutex,CYU3P_NO_INHERIT);
     return;
 
 InitError:
