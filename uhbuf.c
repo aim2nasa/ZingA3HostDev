@@ -65,10 +65,22 @@ CyFxSendBuffer (
 	CyU3PDebugPrint (4,"outhostactiveep=%x", *host_active_ep);
 	CyU3PDebugPrint (4,"outPendingXfer=%x\r\n", glHostPendingEpXfer_debug);
 	
+    status = CyU3PMutexGet(&gMutex,CYU3P_WAIT_FOREVER);
+    if(status!=CY_U3P_SUCCESS) {
+    	CyU3PDebugPrint (4,"[CyFxSendBuffer] CyU3PMutexGet error=0x%x\r\n",status);
+    	return status;
+    }
+
     status = CyU3PUsbHostEpSetXfer (outEp,
             CY_U3P_USB_HOST_EPXFER_NORMAL, count);
     if(status!=CY_U3P_SUCCESS) {
     	CyU3PDebugPrint (4,"[CyFxSendBuffer] CyU3PUsbHostEpSetXfer error=0x%x, ep=0x%x,count=%d\r\n",status,outEp,count);
+    	return status;
+    }
+
+    status = CyU3PMutexPut(&gMutex);
+    if(status!=CY_U3P_SUCCESS) {
+    	CyU3PDebugPrint (4,"[CyFxSendBuffer] CyU3PMutexPut error=0x%x\r\n",status);
     	return status;
     }
 
@@ -140,6 +152,12 @@ CyFxRecvBuffer (
      CyU3PDebugPrint (4,"hostepwaitstat=%x", status);
     }*/  /*removing CyU3PUsbHostEpWaitForCompletion() as we cannot use this to check glHostPendingEpXfer*/
 
+    status = CyU3PMutexGet(&gMutex,CYU3P_WAIT_FOREVER);
+    if(status!=CY_U3P_SUCCESS) {
+    	CyU3PDebugPrint (4,"[CyFxRecvBuffer] CyU3PMutexGet error=0x%x\r\n",status);
+    	return status;
+    }
+
     status = CyU3PUsbHostEpSetXfer (inpEp,
             CY_U3P_USB_HOST_EPXFER_NORMAL, count);
     if(status!=CY_U3P_SUCCESS) {
@@ -153,6 +171,12 @@ CyFxRecvBuffer (
 				break;
 		}
 		if (status != CY_U3P_SUCCESS)*/  /*observed that none of the retries removes invalid sequence error.*/
+    	return status;
+    }
+
+    status = CyU3PMutexPut(&gMutex);
+    if(status!=CY_U3P_SUCCESS) {
+    	CyU3PDebugPrint (4,"[CyFxRecvBuffer] CyU3PMutexPut error=0x%x\r\n",status);
     	return status;
     }
 
