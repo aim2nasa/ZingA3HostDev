@@ -51,10 +51,22 @@ CyFxSendBuffer (
     	return status;
     }
 
+    status = CyU3PMutexGet(&gMutex,CYU3P_WAIT_FOREVER);
+    if(status!=CY_U3P_SUCCESS) {
+    	CyU3PDebugPrint (4,"[CyFxSendBuffer] CyU3PMutexGet error=0x%x\r\n",status);
+    	return status;
+    }
+
     status = CyU3PUsbHostEpSetXfer (outEp,
             CY_U3P_USB_HOST_EPXFER_NORMAL, count);
     if(status!=CY_U3P_SUCCESS) {
     	CyU3PDebugPrint (4,"[CyFxSendBuffer] CyU3PUsbHostEpSetXfer error=0x%x, ep=0x%x,count=%d\r\n",status,outEp,count);
+    	return status;
+    }
+
+    status = CyU3PMutexPut(&gMutex);
+    if(status!=CY_U3P_SUCCESS) {
+    	CyU3PDebugPrint (4,"[CyFxSendBuffer] CyU3PMutexPut error=0x%x\r\n",status);
     	return status;
     }
 
@@ -100,10 +112,22 @@ CyFxRecvBuffer (
     	return status;
     }
 
+    status = CyU3PMutexGet(&gMutex,CYU3P_WAIT_FOREVER);
+    if(status!=CY_U3P_SUCCESS) {
+    	CyU3PDebugPrint (4,"[CyFxRecvBuffer] CyU3PMutexGet error=0x%x\r\n",status);
+    	return status;
+    }
+
     status = CyU3PUsbHostEpSetXfer (inpEp,
             CY_U3P_USB_HOST_EPXFER_NORMAL, count);
     if(status!=CY_U3P_SUCCESS) {
     	CyU3PDebugPrint (4,"[CyFxRecvBuffer] CyU3PUsbHostEpSetXfer error=0x%x, ep=0x%x,count=%d\r\n",status,inpEp,count);
+    	return status;
+    }
+
+    status = CyU3PMutexPut(&gMutex);
+    if(status!=CY_U3P_SUCCESS) {
+    	CyU3PDebugPrint (4,"[CyFxRecvBuffer] CyU3PMutexPut error=0x%x\r\n",status);
     	return status;
     }
 
