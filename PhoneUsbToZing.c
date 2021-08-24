@@ -41,7 +41,7 @@ void
 PhoneUsbToZingThread(
 		uint32_t Value)
 {
-	CyU3PReturnStatus_t Status;
+	CyU3PReturnStatus_t Status,status;
 	uint32_t rt_len;
 	CyU3PDmaBuffer_t Buf;
 
@@ -60,7 +60,15 @@ PhoneUsbToZingThread(
 	memset(&phoneUsbToZing.Count_,0,sizeof(phoneUsbToZing.Count_));
 	phoneUsbToZingTerminate = CyFalse;
 	while(1){
-	    if ((Status=CyFxRecvBuffer (Phone.inEp,&glChHandlePhoneDataIn,Buf.buffer,Buf.size,&rt_len)) != CY_U3P_SUCCESS) {
+        status = CyU3PMutexGet(&gMutex,CYU3P_WAIT_FOREVER);
+        if(status!=CY_U3P_SUCCESS) CyU3PDebugPrint (4,"[PhoneUsbToZingThread] CyU3PMutexGet error=0x%x\r\n",status);
+
+        Status=CyFxRecvBuffer (Phone.inEp,&glChHandlePhoneDataIn,Buf.buffer,Buf.size,&rt_len);
+
+        status = CyU3PMutexPut(&gMutex);
+        if(status!=CY_U3P_SUCCESS) CyU3PDebugPrint (4,"[PhoneUsbToZingThread] CyU3PMutexPut error=0x%x\r\n",status);
+
+        if (Status != CY_U3P_SUCCESS) {
 	    	phoneUsbToZing.Count_.receiveErr++;
 			CyU3PDebugPrint(4,"[P-Z] receiving from PhoneDataIn failed error(0x%x),EP=0x%x\r\n",Status,Phone.inEp);
 			if(phoneUsbToZingTerminate)
