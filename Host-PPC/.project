@@ -150,14 +150,14 @@
 			<locationURI>PARENT-1-PROJECT_LOC/thread.h</locationURI>
 		</link>
 		<link>
-			<name>uhbuf.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/uhbuf.c</locationURI>
-		</link>
-		<link>
 			<name>uhbuf.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/uhbuf.h</locationURI>
+		</link>
+		<link>
+			<name>uhbuf_4.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/uhbuf_4.c</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
